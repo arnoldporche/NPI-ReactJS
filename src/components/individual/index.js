@@ -109,6 +109,15 @@ export default class Individual extends Component {
     this.componentDidMount(searchLastName, searchFirstName, searchNPI);
   }
 
+  weightList() {
+    /*
+      return this.state.dataSource.map(currentweight => {
+          return <Weight weight={currentweight} />;
+      })
+      */
+    return <div>test</div>;
+  }
+
   render() {
     const SearchResults = data => {
       return <div>Names: {data.length}</div>;
@@ -183,6 +192,7 @@ export default class Individual extends Component {
           </div>
           <SearchResults data={this.state.dataSource.results} />
           results: {this.state.dataSource.length}
+          {this.weightList()}
         </div>
       </div>
     );
