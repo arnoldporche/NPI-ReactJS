@@ -1,7 +1,27 @@
 import React, { Component } from "react";
+import { Link } from 'react-router-dom';
 import axios from "axios";
 
 document.body.style = "background: #eee;";
+
+const NPI = props => (
+  <tr>
+      <td>
+        <Link to={"/individual/view/"+props.npi.number}>
+          {props.npi.basic.last_name}, {props.npi.basic.first_name}
+        </Link>
+      </td>
+      <td>
+        {props.npi.taxonomies[0].desc}
+      </td>
+      <td>
+        {props.npi.number}
+      </td>
+      <td>
+        {props.npi.addresses[0].state}
+      </td>
+  </tr>
+)
 
 export default class Individual extends Component {
   constructor(props) {
@@ -17,59 +37,41 @@ export default class Individual extends Component {
       lastName: "villaluz",
       firstName: "",
       npi: "",
-      usState: "",
+      usState: "NV",
       dataSource: []
     };
   }
 
-  /*
-      let url =
-        "https://npiregistry.cms.hhs.gov/api/?version=2.1&limit=10&pretty=true&state=NV&enumeration_type=NPI-1&last_name=villaluz";
-      let config = {
-        method: "GET",
-        mode: "no-cors",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-type": "application/json; charset=UTF-8",
-          "access-control-allow-headers": "content-type"
-        }
-      };
-
-      fetch(url, { mode: "no-cors" })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-        });
-      //.catch(err => console.log(err));
-    } else {
-      //console.log('no');
-    }
-*/
-  /*
-        var f = [];
-
-        if (searchLastName !== "") {
-            f.push('last_name='+searchLastName);
-        }
-
-        if (searchFirstName !== "") {
-            f.push('first_name='+searchFirstName);
-        }
-
-        if (searchNPI > 0) {
-            f.push('number='+searchNPI);
-        }
-*/
-  //var fields = f.join('&');
-
-  //var f = [];
-
-  componentDidMount(searchLastName = "", searchFirstName = "", searchNPI = "") {
+  componentDidMount(searchLastName = "", searchFirstName = "", searchNPI = "", searchUSState = "") {
     if (searchLastName !== "" || searchFirstName !== "" || searchNPI > 0) {
+      var f = [];
+
+      if (searchLastName !== "") {
+        f.push('last_name='+searchLastName);
+      }
+
+      if (searchFirstName !== "") {
+        f.push('first_name='+searchFirstName);
+      }
+
+      if (searchNPI > 0) {
+        f.push('number='+searchNPI);
+      }
+
+      if (searchUSState !== "") {
+        f.push('usState='+searchUSState);
+      }
+
+      f.push('enumeration_type=NPI-1');
+
+      var fields = f.join('&');
+
+      f = [];
+
       axios
-        .get("http://localhost:3000/npiregistry")
+        .get("http://ec2-52-39-90-233.us-west-2.compute.amazonaws.com:3000/npiregistry?"+fields)
         .then(response => {
-          this.setState({ dataSource: response.data });
+          this.setState({ dataSource: response.data.results });
         })
         .catch(error => {
           console.log(error);
@@ -105,30 +107,23 @@ export default class Individual extends Component {
     let searchLastName = this.state.lastName;
     let searchFirstName = this.state.firstName;
     let searchNPI = this.state.npi;
-    //let searchUSState = this.state.usState;alert(searchUSState);
-    this.componentDidMount(searchLastName, searchFirstName, searchNPI);
+    let searchUSState = this.state.usState;
+    this.componentDidMount(searchLastName, searchFirstName, searchNPI, searchUSState);
   }
 
-  weightList() {
-    /*
-      return this.state.dataSource.map(currentweight => {
-          return <Weight weight={currentweight} />;
+  npiList() {
+      return this.state.dataSource.map(currentnpi => {
+        return <NPI npi={currentnpi} key={currentnpi.number} />;
       })
-      */
-    return <div>test</div>;
   }
 
   render() {
-    const SearchResults = data => {
-      return <div>Names: {data.length}</div>;
-    };
-
     return (
       <div className="container">
         <br />
         <div className="card">
           <div className="card-header">
-            <h3>Individualsss</h3>
+            <h3>Individual</h3>
           </div>
           <div className="card-body">
             <div className="row">
@@ -173,6 +168,8 @@ export default class Individual extends Component {
                     value={this.state.usState}
                     onChange={this.onChangeUSState}
                   >
+                    <option value=""></option>
+                    <option value="CA">CA - California</option>
                     <option value="NV">NV - Nevada</option>
                   </select>
                 </div>
@@ -190,9 +187,19 @@ export default class Individual extends Component {
               </div>
             </div>
           </div>
-          <SearchResults data={this.state.dataSource.results} />
-          results: {this.state.dataSource.length}
-          {this.weightList()}
+          <table className="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Classification</th>
+                    <th>NPI</th>
+                    <th>US State</th>
+                </tr>
+            </thead>
+            <tbody>
+                { this.npiList() }
+            </tbody>
+          </table>
         </div>
       </div>
     );
