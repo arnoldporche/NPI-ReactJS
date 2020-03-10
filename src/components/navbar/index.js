@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Navbar, NavbarBrand, Nav, NavbarToggler, Collapse, NavItem } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserMd, faHospital } from '@fortawesome/free-solid-svg-icons';
 
 export default class Menu extends Component {
     constructor(props) {
@@ -41,11 +43,15 @@ export default class Menu extends Component {
                         <Nav navbar>
                             <NavItem>
                                 <NavLink to="/individual" className="nav-link">
+                                    <FontAwesomeIcon icon={ faUserMd } />
+                                    {' '}
                                     Individual
                                 </NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink to="/organization" className="nav-link">
+                                    <FontAwesomeIcon icon={ faHospital } />
+                                    {' '}
                                     Organization
                                 </NavLink>
                             </NavItem>

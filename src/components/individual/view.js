@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import moment from'moment';
+import { Button } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserMd, faIdCard, faEnvelope, faBuilding, faPhone, faFax } from '@fortawesome/free-solid-svg-icons';
 
 document.body.style = "background: #eee;";
 
@@ -23,8 +26,10 @@ const NPI = props => (
     <div>
         <br />
         <div className="card">
-            <div className="card-header">
-                <Link to={"/individual"}>
+            <div className="card-header bg-info text-white">
+                <Link to={"/individual"} className="text-white">
+                    <FontAwesomeIcon icon={ faUserMd } />
+                    {' '}
                     Individual
                 </Link>
                 {' '}
@@ -42,7 +47,9 @@ const NPI = props => (
         </div>
         <br />
         <div className="card">
-            <div className="card-header">
+            <div className="card-header bg-info text-white">
+                <FontAwesomeIcon icon={ faIdCard } />
+                {' '}
                 Identifiers
             </div>
             <ul className="list-group">
@@ -75,38 +82,71 @@ const NPI = props => (
         <div className="row">
             <div className="col">
                 <div className="card">
-                    <div className="card-header">
+                    <div className="card-header bg-info text-white">
+                        <FontAwesomeIcon icon={ faEnvelope } />
+                        {' '}
                         Mailing Address
                     </div>
                     <div className="card-body">
-                        {props.npi.addresses[1].address_1}
+                        <Button outline color="info" block>
+                            {props.npi.addresses[1].address_1}
+                            <br />
+                            {props.npi.addresses[1].city}, {props.npi.addresses[1].state} {props.npi.addresses[1].postal_code}
+                        </Button>
                         <br />
-                        {props.npi.addresses[1].city}, {props.npi.addresses[1].state} {props.npi.addresses[1].postal_code}
-                        <br />
-                        Phone: {props.npi.addresses[1].telephone_number}
-                        <br />
-                        Fax: {props.npi.addresses[1].fax_number}
+                        <div className="row">
+                            <div className="col">
+                                <Button color="primary" size="sm" href="tel:{props.npi.addresses[1].telephone_number}">
+                                    <FontAwesomeIcon icon={ faPhone } />
+                                    {' '}
+                                    {props.npi.addresses[1].telephone_number}
+                                </Button>
+                            </div>
+                            <div className="col">
+                                <Button color="secondary" size="sm">
+                                    <FontAwesomeIcon icon={ faFax } />
+                                    {' '}
+                                    {props.npi.addresses[1].fax_number}
+                                </Button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div className="col">
                 <div className="card">
-                    <div className="card-header">
+                    <div className="card-header bg-info text-white">
+                        <FontAwesomeIcon icon={ faBuilding } />
+                        {' '}
                         Practice Location
                     </div>
                     <div className="card-body">
-                        {props.npi.addresses[0].address_1}
+                        <Button outline color="info" block>
+                            {props.npi.addresses[0].address_1}
+                            <br />
+                            {props.npi.addresses[0].city}, {props.npi.addresses[0].state} {props.npi.addresses[0].postal_code}
+                        </Button>
                         <br />
-                        {props.npi.addresses[0].city}, {props.npi.addresses[0].state} {props.npi.addresses[0].postal_code}
-                        <br />
-                        Phone: {props.npi.addresses[0].telephone_number}
-                        <br />
-                        Fax: {props.npi.addresses[0].fax_number}
+                        <div className="row">
+                            <div className="col">
+                                <Button color="primary" size="sm" href="tel:{props.npi.addresses[0].telephone_number}">
+                                    <FontAwesomeIcon icon={ faPhone } />
+                                    {' '}
+                                    {props.npi.addresses[0].telephone_number}
+                                </Button>
+                            </div>
+                            <div className="col">
+                                <Button color="secondary" size="sm">
+                                    <FontAwesomeIcon icon={ faFax } />
+                                    {' '}
+                                    {props.npi.addresses[0].fax_number}
+                                </Button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <br />
     </div>
   )
 

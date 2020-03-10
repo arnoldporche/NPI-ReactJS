@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import axios from "axios";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHospital } from '@fortawesome/free-solid-svg-icons';
 
 document.body.style = "background: #eee;";
 
@@ -109,8 +111,12 @@ export default class Individual extends Component {
       <div className="container">
         <br />
         <div className="card">
-          <div className="card-header">
-            <h3>Organization</h3>
+          <div className="card-header bg-info text-white">
+            <h3>
+              <FontAwesomeIcon icon={ faHospital } />
+              {' '}
+              Organization
+            </h3>
           </div>
           <div className="card-body">
             <div className="row">
